@@ -50,7 +50,8 @@ component "razor-server" do |pkg, settings, platform|
       "#{jruby} bundle install --shebang #{settings[:torquebox_prefix]}/jruby/bin/jruby --clean --no-cache --path #{settings[:prefix]}/vendor/bundle --without 'development test doc'",
       "rm -rf .bundle/install.log",
       "rm -rf vendor/bundle/jruby/1.9/cache",
-      "#{jruby} bundle config PATH #{settings[:prefix]}/vendor/bundle"
+      "#{jruby} bundle config PATH #{settings[:prefix]}/vendor/bundle",
+      "sed -i -- 's/version = \"DEVELOPMENT\"/version = \"#{@component.options[:ref]}\"/g' lib/razor/version.rb"
     ]
   end
 
