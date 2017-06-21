@@ -22,7 +22,7 @@ server taking possession of ESX systems).
   proj.license "See components"
   proj.vendor "Puppet Labs <info@puppetlabs.com>"
   proj.homepage "https://www.puppet.com"
-  proj.target_repo "PC1"
+  proj.target_repo "puppet5"
   proj.noarch
 
   proj.conflicts "razor-torquebox"

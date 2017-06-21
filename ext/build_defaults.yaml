@@ -1,10 +1,11 @@
 ---
 project: 'razor-server'
-packaging_url: 'git://github.com/puppetlabs/packaging.git --branch=master'
+packaging_url: 'git://github.com/puppetlabs/packaging.git --branch=1.0.x'
 packaging_repo: 'packaging'
 gpg_key: '7F438280EF8D349F'
+gpg_nonfinal_key: 'B8F999C007BB6C57'
 sign_tar: FALSE
 vanagon_project: TRUE
-apt_repo_name: 'PC1'
-yum_repo_name: 'PC1'
+repo_name: 'puppet5'
+nonfinal_repo_name: 'puppet5-nightly'
 build_tar: FALSE
