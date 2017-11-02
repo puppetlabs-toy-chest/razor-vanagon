@@ -40,6 +40,9 @@ server taking possession of ESX systems).
   proj.setting(:server_bindir, "/opt/puppetlabs/server/bin")
   proj.setting(:agent_bindir, "/opt/puppetlabs/bin")
 
+  proj.setting(:artifactory_url, "https://artifactory.delivery.puppetlabs.net/artifactory")
+  proj.setting(:buildsources_url, "#{artifactory_url}/generic/buildsources")
+
   proj.user("razor", group: "razor", shell: '/bin/bash', is_system: true, homedir: "#{proj.install_root}/var/razor")
 
   proj.directory proj.prefix

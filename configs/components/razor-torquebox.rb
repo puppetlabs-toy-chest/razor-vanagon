@@ -1,7 +1,7 @@
 component "razor-torquebox" do |pkg, settings, platform|
   pkg.version "3.1.2"
   pkg.md5sum "dd79cb07d20b3135c3651b7a9c0cb40d"
-  pkg.url "http://buildsources.delivery.puppetlabs.net/torquebox-#{pkg.get_version}.tar.gz"
+  pkg.url "#{settings[:buildsources_url]}/torquebox-#{pkg.get_version}.tar.gz"
   pkg.add_source "file://resources/files/razor-torquebox.sh", sum: 'b0c34243002a691ee2179e749de59ae4'
   pkg.add_source "file://resources/files/standalone.xml", sum: '6b0a5e1a7fe63407de03a8ee1bba43f8'
 
