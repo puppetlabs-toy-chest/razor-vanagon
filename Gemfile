@@ -11,5 +11,5 @@ def location_for(place)
 end
 
 gem 'vanagon', *location_for(ENV['VANAGON_LOCATION'] || '~> 0.15.3')
-gem 'packaging', '~> 0.4', :github => 'puppetlabs/packaging'
+gem 'packaging', :github => 'puppetlabs/packaging', :branch => '1.0.x'
 gem 'rake'
