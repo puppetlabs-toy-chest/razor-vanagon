@@ -11,7 +11,6 @@ component "razor-server" do |pkg, settings, platform|
   end
 
   java_home = ""
-  javacmd = ""
   case platform.name
   when /(el-(6|7)|fedora-(f22|f23))/
     pkg.build_requires 'java-1.8.0-openjdk-devel'
@@ -25,7 +24,7 @@ component "razor-server" do |pkg, settings, platform|
     pkg.requires 'openjdk-8-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-8-openjdk-#{platform.architecture}'"
   end
-  jruby = "#{java_home} #{javacmd} #{settings[:torquebox_prefix]}/jruby/bin/jruby -S"
+  jruby = "#{java_home} #{settings[:torquebox_prefix]}/jruby/bin/jruby -S"
 
   pkg.directory File.join(settings[:install_root], "var", "razor")
   pkg.directory File.join(settings[:data_root], "repo")
