@@ -14,14 +14,14 @@ component "razor-server" do |pkg, settings, platform|
   java_requires = ''
   java_home = ''
   case platform.name
-  when /(el-(6|7)|fedora-(f22|f23))/
+  when /el-(6|7)/
     java_build_requires = 'java-1.8.0-openjdk-devel'
     java_requires = 'java-1.8.0-openjdk'
-  when /(debian-(7|8)|ubuntu-(12|14))/
+  when /(debian-(7|8)|ubuntu-14)/
     java_build_requires = 'openjdk-7-jdk'
     java_requires = 'openjdk-7-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-7-openjdk-#{platform.architecture}'"
-  when /(debian-9|ubuntu-(15|16))/
+  when /(debian-9|ubuntu-16)/
     java_build_requires = 'openjdk-8-jdk'
     java_requires = 'openjdk-8-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-8-openjdk-#{platform.architecture}'"
