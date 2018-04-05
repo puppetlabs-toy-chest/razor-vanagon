@@ -49,7 +49,7 @@ component "razor-server" do |pkg, settings, platform|
     fail "need to know where to put service files"
   end
   pkg.install_configfile "ext/razor-server.sysconfig", "/etc/sysconfig/razor-server"
-  pkg.install_configfile "config.yaml.sample", "#{settings[:sysconfdir]}/config.yaml"
+  pkg.install_configfile "config.yaml.sample", "#{settings[:configdir]}/config.yaml"
   pkg.install_configfile "shiro.ini", "#{settings[:sysconfdir]}/shiro.ini"
 
   pkg.configure do
@@ -95,8 +95,8 @@ component "razor-server" do |pkg, settings, platform|
   # On upgrade, check to see if these files exist and copy them out of the way to preserve their contents
   pkg.add_preinstall_action ['upgrade'],
     [
-      "[[ -e /etc/razor/config.yaml ]] && mkdir -p /tmp/.razor-server.upgrade && cp /etc/razor/config.yaml /tmp/.razor-server.upgrade/config.yaml",
-      "[[ -e /etc/razor/shiro.ini ]] && mkdir -p /tmp/.razor-server.upgrade && cp /etc/razor/shiro.ini /tmp/.razor-server.upgrade/shiro.ini",
+      "[[ -e #{settings[:configdir]}/config.yaml ]] && mkdir -p /tmp/.razor-server.upgrade && cp #{settings[:configdir]}/config.yaml /tmp/.razor-server.upgrade/config.yaml",
+      "[[ -e #{settings[:sysconfdir]}/shiro.ini ]] && mkdir -p /tmp/.razor-server.upgrade && cp #{settings[:sysconfdir]}/shiro.ini /tmp/.razor-server.upgrade/shiro.ini",
     ]
 
   pkg.add_postinstall_action ['install', 'upgrade'],
@@ -116,7 +116,7 @@ component "razor-server" do |pkg, settings, platform|
 
   pkg.add_postinstall_action ['upgrade'],
     [
-      "[[ -e /tmp/.razor-server.upgrade/config.yaml ]] && mv /tmp/.razor-server.upgrade/config.yaml #{settings[:sysconfdir]}/config.yaml",
+      "[[ -e /tmp/.razor-server.upgrade/config.yaml ]] && mv /tmp/.razor-server.upgrade/config.yaml #{settings[:configdir]}/config.yaml",
       "[[ -e /tmp/.razor-server.upgrade/shiro.ini ]] && mv /tmp/.razor-server.upgrade/shiro.ini #{settings[:sysconfdir]}/shiro.ini",
       "[[ -e /tmp/.razor-server.upgrade ]] && rm -rf /tmp/.razor-server.upgrade",
 

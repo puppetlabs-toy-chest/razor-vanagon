@@ -5,4 +5,6 @@ project 'razor-server' do |proj|
   proj.setting(:pe_package, false)
 
   proj.instance_eval File.read('configs/projects/razor-server-shared.rb')
+
+  proj.setting(:configdir, proj.sysconfdir)
 end
