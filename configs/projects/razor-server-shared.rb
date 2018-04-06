@@ -1,5 +1,3 @@
-platform = proj.get_platform
-
 proj.description <<-eos
 Razor is an advanced provisioning application
 Razor is an advanced provisioning application which can deploy both bare-metal
