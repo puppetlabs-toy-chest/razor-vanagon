@@ -3,6 +3,7 @@ project 'razor-server' do |proj|
   proj.replaces "pe-razor-server"
 
   proj.setting(:pe_package, false)
+  proj.setting(:razor_user, 'razor')
 
   proj.instance_eval File.read('configs/projects/razor-server-shared.rb')
 

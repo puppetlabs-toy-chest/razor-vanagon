@@ -6,6 +6,7 @@ project 'pe-razor-server' do |proj|
   proj.provides "pe-razor-libs"
 
   proj.setting(:pe_package, true)
+  proj.setting(:razor_user, 'pe-razor')
   proj.setting(:pe_version, ENV['PE_VER'] || '2018.1')
   platform.add_build_repository "http://enterprise.delivery.puppetlabs.net/#{proj.pe_version}/repos/#{platform.name}/#{platform.name}.repo"
 

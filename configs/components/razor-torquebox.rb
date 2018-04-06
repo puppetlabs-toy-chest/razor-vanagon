@@ -28,6 +28,6 @@ component "razor-torquebox" do |pkg, settings, platform|
 
   pkg.add_postinstall_action ['install', 'upgrade'],
     [
-      "/bin/chown -R razor:razor #{settings[:torquebox_prefix]}",
+      "/bin/chown -R #{settings[:razor_user]}:#{settings[:razor_user]} #{settings[:torquebox_prefix]}",
     ]
 end

@@ -42,7 +42,7 @@ proj.setting(:agent_bindir, "/opt/puppetlabs/bin")
 proj.setting(:artifactory_url, "https://artifactory.delivery.puppetlabs.net/artifactory")
 proj.setting(:buildsources_url, "#{artifactory_url}/generic/buildsources")
 
-proj.user("razor", group: "razor", shell: '/bin/bash', is_system: true, homedir: "#{proj.install_root}/var/razor")
+proj.user(proj.razor_user, group: proj.razor_user, shell: '/bin/bash', is_system: true, homedir: "#{proj.install_root}/var/#{proj.razor_user}")
 
 proj.directory proj.prefix
 proj.directory proj.torquebox_prefix

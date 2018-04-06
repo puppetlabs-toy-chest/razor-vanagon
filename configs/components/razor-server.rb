@@ -110,10 +110,10 @@ component "razor-server" do |pkg, settings, platform|
 
   pkg.add_postinstall_action ['install', 'upgrade'],
     [
-      "/bin/chown -R razor:razor #{settings[:install_root]}/var/razor || :",
-      "/bin/chown -R razor:razor #{settings[:data_root]}/repo || :",
-      "/bin/chown -R razor:razor #{settings[:logdir]} || :",
-      "/bin/chown -R razor:razor #{settings[:rundir]} || :",
+      "/bin/chown -R #{settings[:razor_user]}:#{settings[:razor_user]} #{settings[:install_root]}/var/#{settings[:razor_user]} || :",
+      "/bin/chown -R #{settings[:razor_user]}:#{settings[:razor_user]} #{settings[:data_root]}/repo || :",
+      "/bin/chown -R #{settings[:razor_user]}:#{settings[:razor_user]} #{settings[:logdir]} || :",
+      "/bin/chown -R #{settings[:razor_user]}:#{settings[:razor_user]} #{settings[:rundir]} || :",
       "echo 'The razor-admin binary has been moved to /opt/puppetlabs/bin and is not currently on the path. To access it, log out and log back in or run `source /etc/profile.d/razorserver.sh`'"
     ]
 
@@ -141,7 +141,7 @@ component "razor-server" do |pkg, settings, platform|
       # and this directory loses it's permissions. Since we're not forcing the
       # user to migrate to the new repo store location, we need to make sure
       # the razor user still has access to this directory.
-      "[[ -e /var/lib/razor/repo-store ]] && /bin/chown -R razor:razor /var/lib/razor/repo-store",
+      "[[ -e /var/lib/razor/repo-store ]] && /bin/chown -R #{settings[:razor_user]}:#{settings[:razor_user]} /var/lib/razor/repo-store",
     ]
 
   pkg.add_preremove_action ['upgrade', 'removal'],
