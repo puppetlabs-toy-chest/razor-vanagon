@@ -10,20 +10,29 @@ component "razor-server" do |pkg, settings, platform|
     pkg.requires "libarchive-dev"
   end
 
-  java_home = ""
+  java_build_requires = ''
+  java_requires = ''
+  java_home = ''
   case platform.name
   when /(el-(6|7)|fedora-(f22|f23))/
-    pkg.build_requires 'java-1.8.0-openjdk-devel'
-    pkg.requires 'java-1.8.0-openjdk'
+    java_build_requires = 'java-1.8.0-openjdk-devel'
+    java_requires = 'java-1.8.0-openjdk'
   when /(debian-(7|8)|ubuntu-(12|14))/
-    pkg.build_requires 'openjdk-7-jdk'
-    pkg.requires 'openjdk-7-jre-headless'
+    java_build_requires = 'openjdk-7-jdk'
+    java_requires = 'openjdk-7-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-7-openjdk-#{platform.architecture}'"
   when /(debian-9|ubuntu-(15|16))/
-    pkg.build_requires 'openjdk-8-jdk'
-    pkg.requires 'openjdk-8-jre-headless'
+    java_build_requires = 'openjdk-8-jdk'
+    java_requires = 'openjdk-8-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-8-openjdk-#{platform.architecture}'"
   end
+  if settings[:pe_package]
+    java_build_requires = 'pe-java'
+    java_requires = 'pe-java'
+    java_home = "JAVA_HOME='/opt/puppetlabs/server/apps/java/lib/jvm/java/jre'"
+  end
+  pkg.build_requires java_build_requires
+  pkg.requires java_requires
   jruby = "#{java_home} #{settings[:torquebox_prefix]}/jruby/bin/jruby -S"
 
   pkg.directory File.join(settings[:install_root], "var", "razor")
@@ -54,14 +63,28 @@ component "razor-server" do |pkg, settings, platform|
     ]
   end
 
+  install_commands = [
+    "rm -rf spec",
+    "rm -rf ext",
+    "cp -pr .bundle * #{settings[:prefix]}",
+    "rm -rf #{settings[:prefix]}/vendor/bundle/jruby/1.9/gems/thor-0.19.1/spec",
+    "rm #{settings[:prefix]}/shiro.ini"
+  ]
+  if settings[:pe_package]
+    case platform.servicetype
+    when "systemd"
+      # Add JAVA to razor-server.env so it can find pe-java correctly
+      install_commands.push("sed -i '/^LANG=en_US.UTF-8$$/ a JAVA=#{settings[:server_bindir]}/java' #{settings[:prefix]}/razor-server.env")
+    when "sysv"
+      # Add JAVA to razor-server.init so it can find pe-java correctly
+      install_commands.push("sed -i '/^export LANG$$/ a export JAVA=#{settings[:server_bindir]}/java' #{platform.servicedir}/razor-server")
+    else
+      fail "I don't know what to do with this service type"
+    end
+  end
+
   pkg.install do
-    [
-      "rm -rf spec",
-      "rm -rf ext",
-      "cp -pr .bundle * #{settings[:prefix]}",
-      "rm -rf #{settings[:prefix]}/vendor/bundle/jruby/1.9/gems/thor-0.19.1/spec",
-      "rm #{settings[:prefix]}/shiro.ini"
-    ]
+    install_commands
   end
 
   pkg.link "#{settings[:prefix]}/bin/razor-binary-wrapper", "#{settings[:agent_bindir]}/razor-admin"
