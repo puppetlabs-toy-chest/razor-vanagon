@@ -49,9 +49,3 @@ proj.directory proj.torquebox_prefix
 proj.directory proj.sysconfdir
 proj.directory proj.logdir
 proj.directory proj.rundir
-
-# First our stuff
-proj.component "razor-server"
-
-# Then the dependencies
-proj.component "razor-torquebox"

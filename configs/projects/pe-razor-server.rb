@@ -13,4 +13,7 @@ project 'pe-razor-server' do |proj|
   proj.instance_eval File.read('configs/projects/razor-server-shared.rb')
 
   proj.setting(:configdir, proj.install_root)
+
+  proj.component "razor-server"
+  proj.component "razor-torquebox"
 end
