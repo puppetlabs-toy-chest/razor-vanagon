@@ -13,6 +13,7 @@ component "razor-server" do |pkg, settings, platform|
   java_build_requires = ''
   java_requires = ''
   java_home = ''
+  service_name = 'razor-server'
   case platform.name
   when /el-(6|7)/
     java_build_requires = 'java-1.8.0-openjdk-devel'
@@ -30,6 +31,7 @@ component "razor-server" do |pkg, settings, platform|
     java_build_requires = 'pe-java'
     java_requires = 'pe-java'
     java_home = "JAVA_HOME='/opt/puppetlabs/server/apps/java/lib/jvm/java/jre'"
+    service_name = 'pe-razor-server'
   end
   pkg.build_requires java_build_requires
   pkg.requires java_requires
@@ -40,11 +42,11 @@ component "razor-server" do |pkg, settings, platform|
 
   case platform.servicetype
   when "systemd"
-    pkg.install_service "ext/razor-server.service"
+    pkg.install_service "ext/razor-server.service", nil, service_name
     pkg.install_configfile "ext/razor-server.env", "#{settings[:prefix]}/razor-server.env"
     pkg.install_configfile "ext/razor-server-tmpfiles.conf", "/usr/lib/tmpfiles.d/razor-server.conf"
   when "sysv"
-    pkg.install_service "ext/razor-server.init"
+    pkg.install_service "ext/razor-server.init", nil, service_name
   else
     fail "need to know where to put service files"
   end
@@ -80,9 +82,11 @@ component "razor-server" do |pkg, settings, platform|
       install_commands.push("sed -i 's/User=razor/User=pe-razor/g' #{platform.servicedir}/#{service_name}.service")
     when "sysv"
       # Add JAVA to razor-server.init so it can find pe-java correctly
-      install_commands.push("sed -i '/^export LANG$$/ a export JAVA=#{settings[:server_bindir]}/java' #{platform.servicedir}/razor-server")
+      install_commands.push("sed -i '/^export LANG$$/ a export JAVA=#{settings[:server_bindir]}/java' #{platform.servicedir}/#{service_name}")
       # Change service user to pe-razor
-      install_commands.push("sed -i 's/USER=\"razor\"/USER=\"pe-razor\"/g' #{platform.servicedir}/razor-server")
+      install_commands.push("sed -i 's/USER=\"razor\"/USER=\"pe-razor\"/g' #{platform.servicedir}/#{service_name}")
+      # Change service name to pe-razor-server
+      install_commands.push("sed -i 's/^NAME=\"razor-server\"/NAME=\"pe-razor-server\"/g' #{platform.servicedir}/#{service_name}")
     else
       fail "I don't know what to do with this service type"
     end
