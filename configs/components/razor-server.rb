@@ -18,7 +18,7 @@ component "razor-server" do |pkg, settings, platform|
   when /el-(6|7)/
     java_build_requires = 'java-1.8.0-openjdk-devel'
     java_requires = 'java-1.8.0-openjdk'
-  when /(debian-(7|8)|ubuntu-14)/
+  when /(debian-8|ubuntu-14)/
     java_build_requires = 'openjdk-7-jdk'
     java_requires = 'openjdk-7-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-7-openjdk-#{platform.architecture}'"
