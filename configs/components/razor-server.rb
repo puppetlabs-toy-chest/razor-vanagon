@@ -75,9 +75,14 @@ component "razor-server" do |pkg, settings, platform|
     when "systemd"
       # Add JAVA to razor-server.env so it can find pe-java correctly
       install_commands.push("sed -i '/^LANG=en_US.UTF-8$$/ a JAVA=#{settings[:server_bindir]}/java' #{settings[:prefix]}/razor-server.env")
+      # Change users to pe-razor
+      install_commands.push("sed -i 's/USER=razor/USER=pe-razor/g' #{settings[:prefix]}/razor-server.env")
+      install_commands.push("sed -i 's/User=razor/User=pe-razor/g' #{platform.servicedir}/#{service_name}.service")
     when "sysv"
       # Add JAVA to razor-server.init so it can find pe-java correctly
       install_commands.push("sed -i '/^export LANG$$/ a export JAVA=#{settings[:server_bindir]}/java' #{platform.servicedir}/razor-server")
+      # Change service user to pe-razor
+      install_commands.push("sed -i 's/USER=\"razor\"/USER=\"pe-razor\"/g' #{platform.servicedir}/razor-server")
     else
       fail "I don't know what to do with this service type"
     end
