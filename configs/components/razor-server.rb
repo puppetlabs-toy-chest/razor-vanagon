@@ -50,7 +50,7 @@ component "razor-server" do |pkg, settings, platform|
   else
     fail "need to know where to put service files"
   end
-  pkg.install_configfile "ext/razor-server.sysconfig", "/etc/sysconfig/razor-server"
+  pkg.install_configfile "ext/razor-server.sysconfig", "/etc/sysconfig/#{service_name}"
   pkg.install_configfile "config.yaml.sample", "#{settings[:configdir]}/config.yaml"
   pkg.install_configfile "shiro.ini", "#{settings[:sysconfdir]}/shiro.ini"
 
