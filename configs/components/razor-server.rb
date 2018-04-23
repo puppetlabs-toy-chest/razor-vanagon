@@ -80,6 +80,8 @@ component "razor-server" do |pkg, settings, platform|
       # Change users to pe-razor
       install_commands.push("sed -i 's/USER=razor/USER=pe-razor/g' #{settings[:prefix]}/razor-server.env")
       install_commands.push("sed -i 's/User=razor/User=pe-razor/g' #{platform.servicedir}/#{service_name}.service")
+      # Change sysconfig environment file to pe-razor-server
+      install_commands.push("sed -i 's/razor-server$$/pe-razor-server/g' #{platform.servicedir}/#{service_name}.service")
     when "sysv"
       # Add JAVA to razor-server.init so it can find pe-java correctly
       install_commands.push("sed -i '/^export LANG$$/ a export JAVA=#{settings[:server_bindir]}/java' #{platform.servicedir}/#{service_name}")
