@@ -1,0 +1,18 @@
+{
+  "packaging_type": {
+    "vanagon": "0.15.8"
+  },
+  "version": "1.8.1.0",
+  "components": {
+    "razor-server": {
+      "version": "1.8.1",
+      "url": "git://github.com/puppetlabs/razor-server.git",
+      "ref": "1.8.1"
+    },
+    "razor-torquebox": {
+      "version": "3.2.0",
+      "url": "https://artifactory.delivery.puppetlabs.net/artifactory/generic/buildsources/torquebox-3.2.0.tar.gz"
+    }
+  },
+  "build_time": "2018-04-24T10:58:58-07:00"
+}

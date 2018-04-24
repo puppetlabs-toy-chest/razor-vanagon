@@ -1,5 +1,4 @@
 ---
-project: 'razor-server'
 packaging_url: 'git://github.com/puppetlabs/packaging.git --branch=1.0.x'
 packaging_repo: 'packaging'
 gpg_key: '7F438280EF8D349F'
