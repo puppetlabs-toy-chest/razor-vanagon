@@ -43,7 +43,6 @@ component "razor-server" do |pkg, settings, platform|
   case platform.servicetype
   when "systemd"
     pkg.install_service "ext/razor-server.service", nil, service_name
-    pkg.install_configfile "ext/razor-server.env", "#{settings[:prefix]}/razor-server.env"
     pkg.install_configfile "ext/razor-server-tmpfiles.conf", "/usr/lib/tmpfiles.d/razor-server.conf"
   when "sysv"
     pkg.install_service "ext/razor-server.init", nil, service_name
@@ -73,18 +72,15 @@ component "razor-server" do |pkg, settings, platform|
     "rm #{settings[:prefix]}/shiro.ini"
   ]
   if settings[:pe_package]
+    # Add JAVA to sysconfig so it can find pe-java correctly
+    install_commands.push("sed -i '/^JAVA_OPTS=.*$$/ a JAVA=#{settings[:server_bindir]}/java' /etc/sysconfig/#{service_name}")
     case platform.servicetype
     when "systemd"
-      # Add JAVA to razor-server.env so it can find pe-java correctly
-      install_commands.push("sed -i '/^LANG=en_US.UTF-8$$/ a JAVA=#{settings[:server_bindir]}/java' #{settings[:prefix]}/razor-server.env")
-      # Change users to pe-razor
-      install_commands.push("sed -i 's/USER=razor/USER=pe-razor/g' #{settings[:prefix]}/razor-server.env")
+      # Change user to pe-razor
       install_commands.push("sed -i 's/User=razor/User=pe-razor/g' #{platform.servicedir}/#{service_name}.service")
       # Change sysconfig environment file to pe-razor-server
       install_commands.push("sed -i 's/razor-server$$/pe-razor-server/g' #{platform.servicedir}/#{service_name}.service")
     when "sysv"
-      # Add JAVA to razor-server.init so it can find pe-java correctly
-      install_commands.push("sed -i '/^export LANG$$/ a export JAVA=#{settings[:server_bindir]}/java' #{platform.servicedir}/#{service_name}")
       # Change service user to pe-razor
       install_commands.push("sed -i 's/USER=\"razor\"/USER=\"pe-razor\"/g' #{platform.servicedir}/#{service_name}")
       # Change service name to pe-razor-server
