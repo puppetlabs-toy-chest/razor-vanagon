@@ -106,8 +106,8 @@ component "razor-server" do |pkg, settings, platform|
   # On upgrade, check to see if these files exist and copy them out of the way to preserve their contents
   pkg.add_preinstall_action ['upgrade'],
     [
-      "[[ -e #{settings[:configdir]}/config.yaml ]] && mkdir -p /tmp/.razor-server.upgrade && cp #{settings[:configdir]}/config.yaml /tmp/.razor-server.upgrade/config.yaml || :",
-      "[[ -e #{settings[:sysconfdir]}/shiro.ini ]] && mkdir -p /tmp/.razor-server.upgrade && cp #{settings[:sysconfdir]}/shiro.ini /tmp/.razor-server.upgrade/shiro.ini || :",
+      "[[ -e #{settings[:configdir]}/config.yaml ]] && mv --force #{settings[:configdir]}/config.yaml #{settings[:configdir]}/config.yaml.orig || :",
+      "[[ -e #{settings[:sysconfdir]}/shiro.ini ]] && mv --force #{settings[:sysconfdir]}/shiro.ini #{settings[:sysconfdir]}/shiro.ini.orig || :",
     ]
 
   pkg.add_postinstall_action ['install', 'upgrade'],
@@ -127,9 +127,8 @@ component "razor-server" do |pkg, settings, platform|
 
   pkg.add_postinstall_action ['upgrade'],
     [
-      "[[ -e /tmp/.razor-server.upgrade/config.yaml ]] && mv /tmp/.razor-server.upgrade/config.yaml #{settings[:configdir]}/config.yaml || :",
-      "[[ -e /tmp/.razor-server.upgrade/shiro.ini ]] && mv /tmp/.razor-server.upgrade/shiro.ini #{settings[:sysconfdir]}/shiro.ini || :",
-      "[[ -e /tmp/.razor-server.upgrade ]] && rm -rf /tmp/.razor-server.upgrade || :",
+      "[[ -e #{settings[:configdir]}/config.yaml.orig ]] && mv --force #{settings[:configdir]}/config.yaml.orig #{settings[:configdir]}/config.yaml || :",
+      "[[ -e #{settings[:sysconfdir]}/shiro.ini.orig ]] && mv --force #{settings[:sysconfdir]}/shiro.ini.orig #{settings[:sysconfdir]}/shiro.ini || :",
 
       # we need making sure the old config files are removed from the file
       # system. If they were already there, they were moved to the new location
