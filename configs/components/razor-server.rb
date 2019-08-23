@@ -22,7 +22,7 @@ component "razor-server" do |pkg, settings, platform|
     java_build_requires = 'openjdk-7-jdk'
     java_requires = 'openjdk-7-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-7-openjdk-#{platform.architecture}'"
-  when /(debian-9|ubuntu-16)/
+  when /(debian-9|ubuntu-16|ubuntu-18)/
     java_build_requires = 'openjdk-8-jdk'
     java_requires = 'openjdk-8-jre-headless'
     java_home = "JAVA_HOME='/usr/lib/jvm/java-8-openjdk-#{platform.architecture}'"
