@@ -28,8 +28,8 @@ component "razor-server" do |pkg, settings, platform|
     java_home = "JAVA_HOME='/usr/lib/jvm/java-8-openjdk-#{platform.architecture}'"
   end
   if settings[:pe_package]
-    java_build_requires = 'pe-java'
-    java_requires = 'pe-java'
+    java_build_requires = 'pe-java-razor'
+    java_requires = 'pe-java-razor'
     java_home = "JAVA_HOME='/opt/puppetlabs/server/apps/java/lib/jvm/java/jre'"
     service_name = 'pe-razor-server'
   end
