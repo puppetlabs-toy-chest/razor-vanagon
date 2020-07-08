@@ -7,8 +7,17 @@ project 'pe-razor-server' do |proj|
 
   proj.setting(:pe_package, true)
   proj.setting(:razor_user, 'pe-razor')
-  proj.setting(:pe_version, ENV['PE_VER'] || '2019.3')
-  platform.add_build_repository "http://enterprise.delivery.puppetlabs.net/#{proj.pe_version}/repos/#{platform.name}/#{platform.name}.repo"
+  proj.setting(:pe_version, ENV['PE_VER'] || '2018.1')
+
+  artifactory_url = 'https://artifactory.delivery.puppetlabs.net/artifactory'
+
+  if platform.is_rpm?
+    platform.add_build_repository "#{artifactory_url}/rpm_enterprise__local/#{settings[:pe_version]}/repos/#{platform.name}/#{platform.name}.repo"
+  end
+
+  if platform.is_deb?
+    platform.add_build_repository "#{artifactory_url}/debian_enterprise__local/#{settings[:pe_version]}/repos/#{platform.name}/#{platform.name}.list"
+  end
 
   proj.instance_eval File.read('configs/projects/razor-server-shared.rb')
 
