@@ -61,7 +61,7 @@ component "razor-server" do |pkg, settings, platform|
       "rm -rf .bundle/install.log",
       "rm -rf vendor/bundle/jruby/1.9/cache",
       "#{jruby} bundle config PATH #{settings[:prefix]}/vendor/bundle",
-      "sed -i -- 's/version = \"DEVELOPMENT\"/version = \"#{@component.options[:ref]}\"/g' lib/razor/version.rb"
+      "sed -i -- 's/version = \"DEVELOPMENT\"/version = \"#{@component.options[:ref].split('/').pop}\"/g' lib/razor/version.rb"
     ]
   end
 
